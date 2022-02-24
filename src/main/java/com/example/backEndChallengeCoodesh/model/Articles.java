@@ -143,7 +143,7 @@ public class Articles {
 		result = prime * result + ((updatedAt == null) ? 0 : updatedAt.hashCode());
 		return result;
 	}
-
+	// To String
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
