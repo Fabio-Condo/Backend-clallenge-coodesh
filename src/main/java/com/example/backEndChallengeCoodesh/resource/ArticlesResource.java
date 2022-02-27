@@ -62,12 +62,10 @@ public class ArticlesResource extends ExceptionHandling {
 	public ResponseEntity<?> getSingleArticle(@PathVariable("id") Long id) throws ArticleNotFoundException {
 		Articles article = articlesService.getExistArticle(id);
 		return ResponseEntity.status(HttpStatus.OK).body(article);
-
 	}
 
 	@PutMapping("/articles/{id}")
-	public ResponseEntity<Articles> updateArticle(@PathVariable Long id, @RequestBody Articles article)
-			throws ArticleNotFoundException {
+	public ResponseEntity<Articles> updateArticle(@PathVariable Long id, @RequestBody Articles article) throws ArticleNotFoundException {
 		Articles articleSaved = articlesService.updateArticle(id, article);
 		return ResponseEntity.status(HttpStatus.OK).body(articleSaved);
 	}
@@ -80,15 +78,12 @@ public class ArticlesResource extends ExceptionHandling {
 
 	@PutMapping("/articles/{id}/featured")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updatePropertyFeatured(@PathVariable Long id, @RequestBody Boolean featured)
-			throws ArticleNotFoundException {
+	public void updatePropertyFeatured(@PathVariable Long id, @RequestBody Boolean featured) throws ArticleNotFoundException {
 		articlesService.updatePropertyFeatured(id, featured);
 	}
 
 	private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String message) {
-		return new ResponseEntity<>(
-				new HttpResponse(httpStatus.value(), httpStatus, httpStatus.getReasonPhrase().toUpperCase(), message),
-				httpStatus);
+		return new ResponseEntity<>(new HttpResponse(httpStatus.value(), httpStatus, httpStatus.getReasonPhrase().toUpperCase(), message),httpStatus);
 	}
 
 }
