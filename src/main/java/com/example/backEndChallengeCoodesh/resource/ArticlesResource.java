@@ -47,7 +47,7 @@ public class ArticlesResource extends ExceptionHandling {
 
 	@GetMapping("/articles")
 	@ResponseStatus(HttpStatus.OK)
-	public Page<Articles> listArticles(@RequestParam(required = false, defaultValue = "") String title,Pageable pageable) {
+	public Page<Articles> listArticles(@RequestParam(required = false, defaultValue = "") String title, Pageable pageable) {
 		return articlesRepository.findByTitleContaining(title, pageable);
 	}
 
