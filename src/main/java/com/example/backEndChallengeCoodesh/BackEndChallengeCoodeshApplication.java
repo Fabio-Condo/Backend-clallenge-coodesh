@@ -1,5 +1,8 @@
 package com.example.backEndChallengeCoodesh;
 
+import static com.example.backEndChallengeCoodesh.constant.FileConstant.ARTICLE_FOLDER;
+
+import java.io.File;
 import java.util.Arrays;
 
 import org.springframework.boot.SpringApplication;
@@ -14,6 +17,7 @@ public class BackEndChallengeCoodeshApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackEndChallengeCoodeshApplication.class, args);
+		new File(ARTICLE_FOLDER).mkdirs();
 	}
 
 	@Bean
