@@ -63,6 +63,7 @@ public class ArticlesService {
 		return articleSaved;
 	}
 
+<<<<<<< HEAD
     public Articles saveArticle(String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException, ArticleNotFoundException, ExistArticleTitleException {
     	getExistArticleByTitle(title);
     	Articles article = new Articles();
@@ -105,6 +106,35 @@ public class ArticlesService {
         LOGGER.info("New article: " + title);
         return currentArticle;
     }
+=======
+        public Articles saveArticle(String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException, ArticleNotFoundException, ExistArticleTitleException {
+		getExistArticleByTitle(title);
+		Articles article = new Articles();
+		Events event = new Events();
+		event.setId(eventId);
+		Launches launch = new Launches();
+		launch.setId(launchId);
+		article.setEvents(event);
+		article.setLaunches(launch);
+		article.setTitle(title);
+		article.setNewsSite(newsSite);
+		article.setSummary(summary);
+		article.setFeatured(featured);
+		article.setPublishedAt(new Date());
+		article.setUpdatedAt(new Date());
+		article.setImageUrl(getTemporaryProfileImageUrl(title)); 
+		articlesRepository.save(article);
+		saveProfileImage(article, articleImage);
+		LOGGER.info("New article: " + title);
+		return article;
+        }
+
+	public Articles updateArticle(Long id, Articles article) throws ArticleNotFoundException {
+		Articles articleSaved = getExistArticle(id);
+		BeanUtils.copyProperties(article, articleSaved, "id");
+		return articlesRepository.save(articleSaved);
+	}
+>>>>>>> 957c8602cebdf62c99713f14363086d916e9172b
 
 	public void updatePropertyFeatured(Long id, Boolean featured) throws ArticleNotFoundException {
 		Articles articleSaved = getExistArticle(id);
