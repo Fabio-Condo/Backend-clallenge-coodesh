@@ -82,12 +82,19 @@ public class ArticlesResource extends ExceptionHandling {
 		return ResponseEntity.status(HttpStatus.OK).body(article);
 	}
 
-	@PutMapping("/articles/{id}")
-	public ResponseEntity<Articles> updateArticle(@PathVariable Long id, @RequestBody Articles article) throws ArticleNotFoundException {
-		Articles articleSaved = articlesService.updateArticle(id, article);
-		return ResponseEntity.status(HttpStatus.OK).body(articleSaved);
-	}
-
+    @PutMapping("/articles/{id}")   
+    public ResponseEntity<Articles> updateArticle(@PathVariable("id") Long id, 
+    											  @RequestParam("title") String title,
+                                           		  @RequestParam("newsSite") String newsSite,
+                                           		  @RequestParam("summary") String summary,
+                                           	      @RequestParam("featured") String featured,
+                                           		  @RequestParam("eventId") String eventId,
+                                           		  @RequestParam("launchId") UUID launchId,
+                                           		  @RequestParam(value = "articleImage", required = false) MultipartFile articleImage) throws IOException, com.example.backEndChallengeCoodesh.exception.NotAnImageFileException, NumberFormatException, ArticleNotFoundException, ExistArticleTitleException{
+    	Articles newArticle = articlesService.updateArticle(id,title, newsSite, summary, articleImage, Boolean.parseBoolean(featured), Long.parseLong(eventId), launchId);
+        return new ResponseEntity<>(newArticle, OK);  
+    }
+	
 	@DeleteMapping("/articles/{id}")
 	public ResponseEntity<HttpResponse> deletar(@PathVariable("id") Long id) throws ArticleNotFoundException {
 		articlesService.deleteArticle(id);

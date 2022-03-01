@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -58,7 +59,7 @@ public class ArticlesService {
 		Articles articleSaved = articlesRepository.findByTitle(title);
 		if(title != null) {
 			throw new ExistArticleTitleException(TITLE_ARTICLE_FOUND + title);
-		}		
+		}
 		return articleSaved;
 	}
 
@@ -83,12 +84,27 @@ public class ArticlesService {
         LOGGER.info("New article: " + title);
         return article;
     }
-
-	public Articles updateArticle(Long id, Articles article) throws ArticleNotFoundException {
-		Articles articleSaved = getExistArticle(id);
-		BeanUtils.copyProperties(article, articleSaved, "id");
-		return articlesRepository.save(articleSaved);
-	}
+    
+    public Articles updateArticle(Long id, String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException, ArticleNotFoundException, ExistArticleTitleException {
+    	getExistArticle(id);
+    	Articles currentArticle = getExistArticle(id);
+        Events event = new Events();
+        event.setId(eventId);
+        Launches launch = new Launches();
+        launch.setId(launchId);
+        currentArticle.setEvents(event);
+        currentArticle.setLaunches(launch);
+        currentArticle.setTitle(title);
+        currentArticle.setNewsSite(newsSite);
+        currentArticle.setSummary(summary);
+        currentArticle.setFeatured(featured);
+        currentArticle.setUpdatedAt(new Date());
+        currentArticle.setImageUrl(getTemporaryProfileImageUrl(title)); 
+        articlesRepository.save(currentArticle);
+        saveProfileImage(currentArticle, articleImage);
+        LOGGER.info("New article: " + title);
+        return currentArticle;
+    }
 
 	public void updatePropertyFeatured(Long id, Boolean featured) throws ArticleNotFoundException {
 		Articles articleSaved = getExistArticle(id);
