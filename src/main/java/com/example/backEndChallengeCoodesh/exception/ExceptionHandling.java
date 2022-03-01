@@ -39,6 +39,12 @@ public class ExceptionHandling implements ErrorController {
 		return createHttpResponse(METHOD_NOT_ALLOWED, String.format(METHOD_IS_NOT_ALLOWED, supportedMethod));
 	}
 
+	@ExceptionHandler(ExistArticleTitleException.class)
+	public ResponseEntity<HttpResponse> existArticleTitleException(ExistArticleTitleException exception) {
+		LOGGER.error(exception.getMessage());
+		return createHttpResponse(BAD_REQUEST, exception.getMessage());
+	}
+	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<HttpResponse> internalServerErrorException(Exception exception) {
 		LOGGER.error(exception.getMessage());

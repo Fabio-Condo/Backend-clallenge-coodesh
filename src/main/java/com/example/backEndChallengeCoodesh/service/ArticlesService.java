@@ -43,6 +43,7 @@ public class ArticlesService {
 	private Logger LOGGER = LoggerFactory.getLogger(getClass()); 
 
 	public static final String NO_ARTICLE_FOUND_BY_ID = "No article found by id: ";
+	public static final String TITLE_ARTICLE_FOUND = "Already existe a article  with this title: ";
 
 	@Autowired
 	private ArticlesRepository articlesRepository;
@@ -52,9 +53,18 @@ public class ArticlesService {
 				.orElseThrow(() -> new ArticleNotFoundException(NO_ARTICLE_FOUND_BY_ID + id));
 		return articleSaved;
 	}
+	
+	public Articles getExistArticleByTitle(String title) throws ArticleNotFoundException, ExistArticleTitleException {
+		Articles articleSaved = articlesRepository.findByTitle(title);
+		if(title != null) {
+			throw new ExistArticleTitleException(TITLE_ARTICLE_FOUND + title);
+		}		
+		return articleSaved;
+	}
 
-    public Articles saveArticle(String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException {
-        Articles article = new Articles();
+    public Articles saveArticle(String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException, ArticleNotFoundException, ExistArticleTitleException {
+    	getExistArticleByTitle(title);
+    	Articles article = new Articles();
         Events event = new Events();
         event.setId(eventId);
         Launches launch = new Launches();

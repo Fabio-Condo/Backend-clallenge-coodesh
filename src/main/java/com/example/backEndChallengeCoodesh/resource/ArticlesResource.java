@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.backEndChallengeCoodesh.exception.ArticleNotFoundException;
 import com.example.backEndChallengeCoodesh.exception.ExceptionHandling;
+import com.example.backEndChallengeCoodesh.exception.ExistArticleTitleException;
 import com.example.backEndChallengeCoodesh.model.Articles;
 import com.example.backEndChallengeCoodesh.model.HttpResponse;
 import com.example.backEndChallengeCoodesh.repository.ArticlesRepository;
@@ -65,7 +66,7 @@ public class ArticlesResource extends ExceptionHandling {
                                            	    @RequestParam("featured") String featured,
                                            		@RequestParam("eventId") String eventId,
                                            		@RequestParam("launchId") UUID launchId,
-                                           		@RequestParam(value = "articleImage", required = false) MultipartFile articleImage) throws IOException, com.example.backEndChallengeCoodesh.exception.NotAnImageFileException{
+                                           		@RequestParam(value = "articleImage", required = false) MultipartFile articleImage) throws IOException, com.example.backEndChallengeCoodesh.exception.NotAnImageFileException, NumberFormatException, ArticleNotFoundException, ExistArticleTitleException{
     	Articles newArticle = articlesService.saveArticle(title, newsSite, summary, articleImage, Boolean.parseBoolean(featured), Long.parseLong(eventId), launchId);
         return new ResponseEntity<>(newArticle, OK);  
     }

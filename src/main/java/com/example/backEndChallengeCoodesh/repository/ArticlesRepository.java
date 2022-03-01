@@ -8,4 +8,5 @@ import com.example.backEndChallengeCoodesh.model.Articles;
 
 public interface ArticlesRepository extends JpaRepository<Articles, Long> {
 	public Page<Articles> findByTitleContaining(String title, Pageable pageable);
+	public Articles findByTitle(String title);
 }
