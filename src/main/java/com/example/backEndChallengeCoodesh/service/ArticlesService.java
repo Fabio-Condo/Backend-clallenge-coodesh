@@ -62,27 +62,27 @@ public class ArticlesService {
 		return articleSaved;
 	}
 
-    public Articles saveArticle(String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException, ArticleNotFoundException, ExistArticleTitleException {
-    	getExistArticleByTitle(title);
-    	Articles article = new Articles();
-        Events event = new Events();
-        event.setId(eventId);
-        Launches launch = new Launches();
-        launch.setId(launchId);
-        article.setEvents(event);
-        article.setLaunches(launch);
-        article.setTitle(title);
-        article.setNewsSite(newsSite);
-        article.setSummary(summary);
-        article.setFeatured(featured);
-        article.setPublishedAt(new Date());
-        article.setUpdatedAt(new Date());
-        article.setImageUrl(getTemporaryProfileImageUrl(title)); 
-        articlesRepository.save(article);
-        saveProfileImage(article, articleImage);
-        LOGGER.info("New article: " + title);
-        return article;
-    }
+        public Articles saveArticle(String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException, ArticleNotFoundException, ExistArticleTitleException {
+		getExistArticleByTitle(title);
+		Articles article = new Articles();
+		Events event = new Events();
+		event.setId(eventId);
+		Launches launch = new Launches();
+		launch.setId(launchId);
+		article.setEvents(event);
+		article.setLaunches(launch);
+		article.setTitle(title);
+		article.setNewsSite(newsSite);
+		article.setSummary(summary);
+		article.setFeatured(featured);
+		article.setPublishedAt(new Date());
+		article.setUpdatedAt(new Date());
+		article.setImageUrl(getTemporaryProfileImageUrl(title)); 
+		articlesRepository.save(article);
+		saveProfileImage(article, articleImage);
+		LOGGER.info("New article: " + title);
+		return article;
+        }
 
 	public Articles updateArticle(Long id, Articles article) throws ArticleNotFoundException {
 		Articles articleSaved = getExistArticle(id);
