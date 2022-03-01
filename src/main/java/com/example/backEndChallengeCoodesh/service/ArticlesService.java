@@ -95,21 +95,21 @@ public class ArticlesService {
         return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_ARTICLE_IMAGE_PATH + title).toUriString();   
     }
 	
-    private void saveProfileImage(Articles article, MultipartFile profileImage) throws IOException, NotAnImageFileException {
-        if (profileImage != null) {
-            if(!Arrays.asList(IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE, IMAGE_GIF_VALUE).contains(profileImage.getContentType())) {
-                throw new NotAnImageFileException(profileImage.getOriginalFilename() + NOT_AN_IMAGE_FILE);
+    private void saveProfileImage(Articles article, MultipartFile image) throws IOException, NotAnImageFileException {
+        if (image != null) {
+            if(!Arrays.asList(IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE, IMAGE_GIF_VALUE).contains(image.getContentType())) {
+                throw new NotAnImageFileException(image.getOriginalFilename() + NOT_AN_IMAGE_FILE);
             }
-            Path userFolder = Paths.get(ARTICLE_FOLDER + article.getTitle()).toAbsolutePath().normalize();  
-            if(!Files.exists(userFolder)) {   
-                Files.createDirectories(userFolder);
-                LOGGER.info(DIRECTORY_CREATED + userFolder);
+            Path articleFolder = Paths.get(ARTICLE_FOLDER + article.getTitle()).toAbsolutePath().normalize();  
+            if(!Files.exists(articleFolder)) {   
+                Files.createDirectories(articleFolder);
+                LOGGER.info(DIRECTORY_CREATED + articleFolder);
             }
-            Files.deleteIfExists(Paths.get(userFolder + article.getTitle() + DOT + JPG_EXTENSION));  
-            Files.copy(profileImage.getInputStream(), userFolder.resolve(article.getTitle() + DOT + JPG_EXTENSION), REPLACE_EXISTING);  
+            Files.deleteIfExists(Paths.get(articleFolder + article.getTitle() + DOT + JPG_EXTENSION));  
+            Files.copy(image.getInputStream(), articleFolder.resolve(article.getTitle() + DOT + JPG_EXTENSION), REPLACE_EXISTING);  
             article.setImageUrl(setArticleImageUrl(article.getTitle()));  
             articlesRepository.save(article);
-            LOGGER.info(FILE_SAVED_IN_FILE_SYSTEM + profileImage.getOriginalFilename());
+            LOGGER.info(FILE_SAVED_IN_FILE_SYSTEM + image.getOriginalFilename());
         }
     }
 
