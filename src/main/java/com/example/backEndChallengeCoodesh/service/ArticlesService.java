@@ -62,7 +62,7 @@ public class ArticlesService {
 		return articleSaved;
 	}
 
-    public Articles saveArticle(String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException, ArticleNotFoundException, ExistArticleTitleException {
+        public Articles saveArticle(String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException, ArticleNotFoundException, ExistArticleTitleException {
 		getExistArticleByTitle(title);
 		Articles article = new Articles();
 		Events event = new Events();
@@ -82,9 +82,9 @@ public class ArticlesService {
 		saveProfileImage(article, articleImage);
 		LOGGER.info("New article: " + title);
 		return article;
-    }
+        }
     
-    public Articles updateArticle(Long id, String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException, ArticleNotFoundException, ExistArticleTitleException {
+        public Articles updateArticle(Long id, String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException, ArticleNotFoundException, ExistArticleTitleException {
 		getExistArticle(id);
 		Articles currentArticle = getExistArticle(id);
 		Events event = new Events();
@@ -102,7 +102,7 @@ public class ArticlesService {
 		saveProfileImage(currentArticle, articleImage);
 		LOGGER.info("New article: " + title);
 		return currentArticle;
-    }
+        }
 
 	public void updatePropertyFeatured(Long id, Boolean featured) throws ArticleNotFoundException {
 		Articles articleSaved = getExistArticle(id);
