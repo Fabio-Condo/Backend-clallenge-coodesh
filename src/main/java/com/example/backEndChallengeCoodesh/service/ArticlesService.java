@@ -62,48 +62,48 @@ public class ArticlesService {
 		return articleSaved;
 	}
 
-    public Articles saveArticle(String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException, ArticleNotFoundException, ExistArticleTitleException {
-    	getExistArticleByTitle(title);
-    	Articles article = new Articles();
-        Events event = new Events();
-        event.setId(eventId);
-        Launches launch = new Launches();
-        launch.setId(launchId);
-        article.setEvents(event);
-        article.setLaunches(launch);
-        article.setTitle(title);
-        article.setNewsSite(newsSite);
-        article.setSummary(summary);
-        article.setFeatured(featured);
-        article.setPublishedAt(new Date());
-        article.setUpdatedAt(new Date());
-        article.setImageUrl(getTemporaryProfileImageUrl(title)); 
-        articlesRepository.save(article);
-        saveProfileImage(article, articleImage);
-        LOGGER.info("New article: " + title);
-        return article;
-    }
+        public Articles saveArticle(String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException, ArticleNotFoundException, ExistArticleTitleException {
+		getExistArticleByTitle(title);
+		Articles article = new Articles();
+		Events event = new Events();
+		event.setId(eventId);
+		Launches launch = new Launches();
+		launch.setId(launchId);
+		article.setEvents(event);
+		article.setLaunches(launch);
+		article.setTitle(title);
+		article.setNewsSite(newsSite);
+		article.setSummary(summary);
+		article.setFeatured(featured);
+		article.setPublishedAt(new Date());
+		article.setUpdatedAt(new Date());
+		article.setImageUrl(getTemporaryProfileImageUrl(title)); 
+		articlesRepository.save(article);
+		saveProfileImage(article, articleImage);
+		LOGGER.info("New article: " + title);
+		return article;
+        }
     
-    public Articles updateArticle(Long id, String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException, ArticleNotFoundException, ExistArticleTitleException {
-    	getExistArticle(id);
-    	Articles currentArticle = getExistArticle(id);
-        Events event = new Events();
-        event.setId(eventId);
-        Launches launch = new Launches();
-        launch.setId(launchId);
-        currentArticle.setEvents(event);
-        currentArticle.setLaunches(launch);
-        currentArticle.setTitle(title);
-        currentArticle.setNewsSite(newsSite);
-        currentArticle.setSummary(summary);
-        currentArticle.setFeatured(featured);
-        currentArticle.setUpdatedAt(new Date());
-        currentArticle.setImageUrl(getTemporaryProfileImageUrl(title)); 
-        articlesRepository.save(currentArticle);
-        saveProfileImage(currentArticle, articleImage);
-        LOGGER.info("New article: " + title);
-        return currentArticle;
-    }
+        public Articles updateArticle(Long id, String title, String newsSite, String summary, MultipartFile articleImage, Boolean featured, Long eventId, UUID launchId) throws IOException, NotAnImageFileException, ArticleNotFoundException, ExistArticleTitleException {
+		getExistArticle(id);
+		Articles currentArticle = getExistArticle(id);
+		Events event = new Events();
+		event.setId(eventId);
+		Launches launch = new Launches();
+		launch.setId(launchId);
+		currentArticle.setEvents(event);
+		currentArticle.setLaunches(launch);
+		currentArticle.setTitle(title);
+		currentArticle.setNewsSite(newsSite);
+		currentArticle.setSummary(summary);
+		currentArticle.setFeatured(featured);
+		currentArticle.setUpdatedAt(new Date());
+		currentArticle.setImageUrl(getTemporaryProfileImageUrl(title)); 
+		articlesRepository.save(currentArticle);
+		saveProfileImage(currentArticle, articleImage);
+		LOGGER.info("New article: " + title);
+		return currentArticle;
+        }
 
 	public void updatePropertyFeatured(Long id, Boolean featured) throws ArticleNotFoundException {
 		Articles articleSaved = getExistArticle(id);
