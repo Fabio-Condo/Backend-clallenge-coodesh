@@ -113,7 +113,7 @@ public class ArticlesService {
 	public void deleteArticle(Long id) throws ArticleNotFoundException, IOException {
 		Articles articleSaved = getExistArticle(id);
 		Path articleFolder = Paths.get(ARTICLE_FOLDER + articleSaved.getTitle()).toAbsolutePath().normalize();
-        FileUtils.deleteDirectory(new File(articleFolder.toString()));
+        	FileUtils.deleteDirectory(new File(articleFolder.toString()));
 		articlesRepository.deleteById(id);
 	}
 	
