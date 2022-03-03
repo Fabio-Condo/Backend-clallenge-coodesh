@@ -96,7 +96,7 @@ public class ArticlesResource extends ExceptionHandling {
     }
 	
 	@DeleteMapping("/articles/{id}")
-	public ResponseEntity<HttpResponse> deletar(@PathVariable("id") Long id) throws ArticleNotFoundException {
+	public ResponseEntity<HttpResponse> deletar(@PathVariable("id") Long id) throws ArticleNotFoundException, IOException {
 		articlesService.deleteArticle(id);
 		return response(OK, ARTICLE_DELETED_SUCCESSFULLY);
 	}

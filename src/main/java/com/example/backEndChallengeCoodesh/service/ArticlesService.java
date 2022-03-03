@@ -10,11 +10,11 @@ import static com.example.backEndChallengeCoodesh.constant.FileConstant.DEFAULT_
 import static com.example.backEndChallengeCoodesh.constant.FileConstant.ARTICLE_FOLDER;
 import static com.example.backEndChallengeCoodesh.constant.FileConstant.ARTICLE_IMAGE_PATH;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.springframework.http.MediaType.IMAGE_GIF_VALUE;
 import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,10 +23,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,7 +56,7 @@ public class ArticlesService {
 	
 	public Articles getExistArticleByTitle(String title) throws ArticleNotFoundException, ExistArticleTitleException {
 		Articles articleSaved = articlesRepository.findByTitle(title);
-		if(title != null) {
+		if(articleSaved != null) {
 			throw new ExistArticleTitleException(TITLE_ARTICLE_FOUND + title);
 		}
 		return articleSaved;
@@ -112,8 +111,10 @@ public class ArticlesService {
 		articlesRepository.save(articleSaved);
 	}
 
-	public void deleteArticle(Long id) throws ArticleNotFoundException {
-		getExistArticle(id);
+	public void deleteArticle(Long id) throws ArticleNotFoundException, IOException {
+		Articles articleSaved = getExistArticle(id);
+		Path articleFolder = Paths.get(ARTICLE_FOLDER + articleSaved.getTitle()).toAbsolutePath().normalize();
+        FileUtils.deleteDirectory(new File(articleFolder.toString()));
 		articlesRepository.deleteById(id);
 	}
 	
