@@ -117,30 +117,30 @@ public class ArticlesService {
 		articlesRepository.deleteById(id);
 	}
 	
-    private String getTemporaryProfileImageUrl(String title) {  
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_ARTICLE_IMAGE_PATH + title).toUriString();   
-    }
-	
-    private void saveProfileImage(Articles article, MultipartFile image) throws IOException, NotAnImageFileException {
-        if (image != null) {
-            if(!Arrays.asList(IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE, IMAGE_GIF_VALUE).contains(image.getContentType())) {
-                throw new NotAnImageFileException(image.getOriginalFilename() + NOT_AN_IMAGE_FILE);
-            }
-            Path articleFolder = Paths.get(ARTICLE_FOLDER + article.getTitle()).toAbsolutePath().normalize();  
-            if(!Files.exists(articleFolder)) {   
-                Files.createDirectories(articleFolder);
-                LOGGER.info(DIRECTORY_CREATED + articleFolder);
-            }
-            Files.deleteIfExists(Paths.get(articleFolder + article.getTitle() + DOT + JPG_EXTENSION));  
-            Files.copy(image.getInputStream(), articleFolder.resolve(article.getTitle() + DOT + JPG_EXTENSION), REPLACE_EXISTING);  
-            article.setImageUrl(setArticleImageUrl(article.getTitle()));  
-            articlesRepository.save(article);
-            LOGGER.info(FILE_SAVED_IN_FILE_SYSTEM + image.getOriginalFilename());
+        private String getTemporaryProfileImageUrl(String title) {  
+                return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_ARTICLE_IMAGE_PATH + title).toUriString();   
         }
-    }
+	
+       private void saveProfileImage(Articles article, MultipartFile image) throws IOException, NotAnImageFileException {
+		if (image != null) {
+		    if(!Arrays.asList(IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE, IMAGE_GIF_VALUE).contains(image.getContentType())) {
+			throw new NotAnImageFileException(image.getOriginalFilename() + NOT_AN_IMAGE_FILE);
+		    }
+		    Path articleFolder = Paths.get(ARTICLE_FOLDER + article.getTitle()).toAbsolutePath().normalize();  
+		    if(!Files.exists(articleFolder)) {   
+			Files.createDirectories(articleFolder);
+			LOGGER.info(DIRECTORY_CREATED + articleFolder);
+		    }
+		    Files.deleteIfExists(Paths.get(articleFolder + article.getTitle() + DOT + JPG_EXTENSION));  
+		    Files.copy(image.getInputStream(), articleFolder.resolve(article.getTitle() + DOT + JPG_EXTENSION), REPLACE_EXISTING);  
+		    article.setImageUrl(setArticleImageUrl(article.getTitle()));  
+		    articlesRepository.save(article);
+		    LOGGER.info(FILE_SAVED_IN_FILE_SYSTEM + image.getOriginalFilename());
+		}
+      } 
 
-    private String setArticleImageUrl(String article) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path(ARTICLE_IMAGE_PATH + article + FORWARD_SLASH
-        + article + DOT + JPG_EXTENSION).toUriString();
-    }
+      private String setArticleImageUrl(String article) {
+                return ServletUriComponentsBuilder.fromCurrentContextPath().path(ARTICLE_IMAGE_PATH + article + FORWARD_SLASH
+                + article + DOT + JPG_EXTENSION).toUriString();
+      }
 }
